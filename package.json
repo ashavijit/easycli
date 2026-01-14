@@ -1,0 +1,22 @@
+{
+  "name": "easycli",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The modern, type-safe replacement for Commander.js",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "clean": "pnpm -r clean",
+    "lint": "eslint packages --ext .ts",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
