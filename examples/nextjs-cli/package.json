@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-cli",
+  "version": "1.0.0",
+  "description": "A clone of create-next-app using EasyCLI",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@easycli/core": "workspace:*",
+    "@easycli/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

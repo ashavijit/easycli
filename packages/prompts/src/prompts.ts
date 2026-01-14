@@ -8,9 +8,10 @@ export interface AskMethods {
   /**
    * Prompts the user for text input.
    * @param message - The question to ask.
+   * @param defaultValue - Optional default value if user enters nothing.
    * @returns The user's input.
    */
-  text(message: string): Promise<string>;
+  text(message: string, defaultValue?: string): Promise<string>;
 
   /**
    * Prompts the user for sensitive input (hidden).
@@ -62,13 +63,13 @@ export function createAsk(
   config: Record<string, unknown>
 ): AskMethods {
   return {
-    async text(message: string): Promise<string> {
+    async text(message: string, defaultValue?: string): Promise<string> {
       const key = toKey(message);
       const flagValue = flags.get(key);
       if (typeof flagValue === "string") return flagValue;
       const configValue = config[key];
       if (typeof configValue === "string") return configValue;
-      return prompt(message);
+      return prompt(message, defaultValue);
     },
 
     async password(message: string): Promise<string> {
@@ -147,16 +148,22 @@ function toKey(message: string): string {
     .replace(/^_|_$/g, "");
 }
 
-async function prompt(message: string): Promise<string> {
+async function prompt(message: string, defaultValue?: string): Promise<string> {
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout
   });
 
+  const question = defaultValue ? `${message} (${defaultValue})` : message;
+
   return new Promise((resolve) => {
-    rl.question(`${message}: `, (answer) => {
+    rl.question(`${question}: `, (answer) => {
       rl.close();
-      resolve(answer);
+      if (!answer && defaultValue) {
+        resolve(defaultValue);
+      } else {
+        resolve(answer);
+      }
     });
   });
 }

@@ -12,10 +12,16 @@ export type FlagValue = string | boolean | number | undefined;
 
 export type FlagsSchema = Record<string, FlagDef | FlagType>;
 
-export type ArgsSchema = Record<string, string[] | "string" | "number">;
+export interface ArgDef {
+  type: "string" | "number";
+  optional?: boolean;
+  description?: string;
+}
+
+export type ArgsSchema = Record<string, string[] | "string" | "number" | ArgDef>;
 
 export interface AskMethods {
-  text(message: string): Promise<string>;
+  text(message: string, defaultValue?: string): Promise<string>;
   password(message: string): Promise<string>;
   confirm(message: string): Promise<boolean>;
   select<T extends string>(message: string, options: T[]): Promise<T>;
@@ -101,6 +107,14 @@ export type InferFlags<T extends FlagsSchema> = {
 
 export type InferArgType<T> = T extends readonly string[]
   ? T[number]
+  : T extends { type: "string"; optional: true }
+  ? string | undefined
+  : T extends { type: "string" }
+  ? string
+  : T extends { type: "number"; optional: true }
+  ? number | undefined
+  : T extends { type: "number" }
+  ? number
   : T extends "string"
   ? string
   : T extends "number"

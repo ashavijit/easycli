@@ -40,6 +40,38 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  examples/nextjs-cli:
+    dependencies:
+      '@easycli/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@easycli/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(tsx@4.21.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
+  examples/simple-app:
+    dependencies:
+      '@easycli/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@easycli/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(tsx@4.21.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   packages/autocomplete:
     devDependencies:
       rimraf:
