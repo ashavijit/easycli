@@ -132,7 +132,26 @@ const cli = defineCLI({
         // 3. Spinner
         console.log("\n--- 3. Spinner ---");
         // Dynamic import to avoid build issues if @easycli/ui isn't in core types yet
-        const { spinner, progress, table } = await import("@easycli/ui");
+        const { spinner, progress, table, box } = await import("@easycli/ui");
+        
+        // Box demo
+        console.log("\\n--- 0. Box Component ---");
+        console.log(box("Update available: 1.0.0 → 2.0.0", {
+          borderStyle: "rounded",
+          borderColor: "yellow",
+          padding: 1
+        }));
+        
+        console.log(box([
+          "New features:",
+          "• Box component",
+          "• Better prompts"
+        ], {
+          title: " What's New ",
+          borderStyle: "double",
+          borderColor: "cyan"
+        }));
+
         
         const s = spinner("Provisioning resources...");
         s.start();

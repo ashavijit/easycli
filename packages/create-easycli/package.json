@@ -1,0 +1,37 @@
+{
+  "name": "create-easycli",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Create a new EasyCLI project with one command",
+  "bin": {
+    "create-easycli": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@easycli/core": "workspace:*",
+    "@easycli/ui": "workspace:*",
+    "@easycli/prompts": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "cli",
+    "scaffold",
+    "generator",
+    "easycli",
+    "create"
+  ],
+  "author": "Avijit",
+  "license": "MIT"
+}

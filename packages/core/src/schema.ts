@@ -29,8 +29,10 @@ export function normalizeArgsSchema(
   for (const [key, value] of Object.entries(args)) {
     if (Array.isArray(value)) {
       normalized[key] = { type: "enum", values: value };
-    } else {
+    } else if (typeof value === "string") {
       normalized[key] = { type: value };
+    } else {
+      normalized[key] = { type: value.type };
     }
   }
   return normalized;
