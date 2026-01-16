@@ -1,4 +1,4 @@
-import { defineCLI } from "@easycli/core";
+import { defineCLI } from "easycli-core";
 
 const tasks: Map<string, { name: string; done: boolean; priority: string }> = new Map();
 let nextId = 1;
@@ -132,7 +132,7 @@ const cli = defineCLI({
         // 3. Spinner
         console.log("\n--- 3. Spinner ---");
         // Dynamic import to avoid build issues if @easycli/ui isn't in core types yet
-        const { spinner, progress, table, box } = await import("@easycli/ui");
+        const { spinner, progress, table, box } = await import("easycli-ui");
         
         // Box demo
         console.log("\\n--- 0. Box Component ---");

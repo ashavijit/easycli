@@ -1,4 +1,4 @@
-# @easycli/ui
+# easycli-ui
 
 Terminal UI components for EasyCLI applications.
 
@@ -11,7 +11,7 @@ Terminal UI components for EasyCLI applications.
 ## Installation
 
 ```bash
-pnpm add @easycli/ui
+pnpm add easycli-ui
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ pnpm add @easycli/ui
 ### Spinner
 
 ```ts
-import { spinner } from "@easycli/ui";
+import { spinner } from "easycli-ui";
 
 const s = spinner("Deploying...");
 s.start();
@@ -36,7 +36,7 @@ s.success("Deployed!");
 ### Progress Bar
 
 ```ts
-import { progress } from "@easycli/ui";
+import { progress } from "easycli-ui";
 
 const bar = progress(100);
 bar.update(20);
@@ -52,7 +52,7 @@ bar.complete();
 ### Table
 
 ```ts
-import { table } from "@easycli/ui";
+import { table } from "easycli-ui";
 
 table([
   { name: "api", status: "running" },

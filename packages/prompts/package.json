@@ -1,6 +1,6 @@
 {
-  "name": "@easycli/prompts",
-  "version": "0.0.1",
+  "name": "easycli-prompts",
+  "version": "0.0.2",
   "description": "Interactive prompts for EasyCLI",
   "type": "module",
   "main": "./dist/index.js",

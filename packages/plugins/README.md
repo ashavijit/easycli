@@ -1,4 +1,4 @@
-# @easycli/plugins
+# easycli-plugins
 
 Plugin system for EasyCLI applications.
 
@@ -13,7 +13,7 @@ Plugin system for EasyCLI applications.
 ### Defining a Plugin
 
 ```ts
-import { definePlugin } from "@easycli/plugins";
+import { definePlugin } from "easycli-plugins";
 
 export const loggerPlugin = definePlugin({
   name: "logger",
@@ -33,7 +33,7 @@ export const loggerPlugin = definePlugin({
 Plugins are passed to `defineCLI` in the core package:
 
 ```ts
-import { defineCLI } from "@easycli/core";
+import { defineCLI } from "easycli-core";
 import { loggerPlugin } from "./plugins/logger";
 
 const cli = defineCLI({

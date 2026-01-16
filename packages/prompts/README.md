@@ -1,4 +1,4 @@
-# @easycli/prompts
+# easycli-prompts
 
 Interactive prompts for EasyCLI applications.
 

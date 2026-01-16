@@ -1,4 +1,4 @@
-# @easycli/help
+# easycli-help
 
 Automatic help text generation for EasyCLI.
 
@@ -10,14 +10,14 @@ Automatic help text generation for EasyCLI.
 
 ## Usage
 
-This package is used internally by `@easycli/core` to generate help text when users run your CLI with `--help` or `-h`.
+This package is used internally by `easycli-core` to generate help text when users run your CLI with `--help` or `-h`.
 
 You generally do not need to use this package directly unless you are building a custom runtime or extending the default help behavior.
 
 ### API
 
 ```ts
-import { generateHelp, generateCommandHelp } from "@easycli/help";
+import { generateHelp, generateCommandHelp } from "easycli-help";
 
 // Generate global CLI help
 const help = generateHelp({

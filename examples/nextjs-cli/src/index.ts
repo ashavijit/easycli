@@ -1,5 +1,5 @@
-import { defineCLI } from "@easycli/core";
-import { colors, spinner } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner } from "easycli-ui";
 
 const cli = defineCLI({
   name: "create-next-app",

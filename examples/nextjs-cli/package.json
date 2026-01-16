@@ -1,5 +1,6 @@
 {
   "name": "nextjs-cli",
+  "private": true,
   "version": "1.0.0",
   "description": "A clone of create-next-app using EasyCLI",
   "main": "dist/index.js",
@@ -10,8 +11,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@easycli/core": "workspace:*",
-    "@easycli/ui": "workspace:*"
+    "easycli-core": "workspace:*",
+    "easycli-ui": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

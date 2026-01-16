@@ -1,4 +1,4 @@
-# @easycli/test-utils
+# easycli-test-utils
 
 Testing utilities for EasyCLI applications.
 
@@ -14,8 +14,8 @@ Testing utilities for EasyCLI applications.
 
 ```ts
 import { describe, it, expect } from "vitest";
-import { createTestRunner } from "@easycli/test-utils";
-import { defineCLI } from "@easycli/core";
+import { createTestRunner } from "easycli-test-utils";
+import { defineCLI } from "easycli-core";
 
 // Define your CLI (or import it)
 const cli = defineCLI({

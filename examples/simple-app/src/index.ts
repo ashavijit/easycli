@@ -1,5 +1,5 @@
-import { defineCLI } from "@easycli/core";
-import { colors } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors } from "easycli-ui";
 
 const cli = defineCLI({
   name: "simple",

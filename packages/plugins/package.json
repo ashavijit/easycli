@@ -1,6 +1,6 @@
 {
-  "name": "@easycli/plugins",
-  "version": "0.0.1",
+  "name": "easycli-plugins",
+  "version": "0.0.2",
   "description": "Plugin system for EasyCLI",
   "type": "module",
   "main": "./dist/index.js",

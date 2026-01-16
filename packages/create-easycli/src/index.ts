@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createInterface } from "node:readline";
-import { box, colors, spinner } from "@easycli/ui";
+import { box, colors, spinner } from "easycli-ui";
 
 
 async function promptText(message: string): Promise<string> {
@@ -108,8 +108,8 @@ async function main() {
         start: "node dist/index.js"
       },
       dependencies: {
-        "@easycli/core": "^0.0.1",
-        "@easycli/ui": "^0.0.1"
+        "easycli-core": "^0.0.1",
+        "easycli-ui": "^0.0.1"
       },
       devDependencies: {
         tsup: "^8.0.1",
@@ -228,8 +228,8 @@ dist/
 
 function generateBasicTemplate(name: string): string {
   return `#!/usr/bin/env node
-import { defineCLI } from "@easycli/core";
-import { colors, spinner, box } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner, box } from "easycli-ui";
 
 const cli = defineCLI({
   name: "${name}",
@@ -264,8 +264,8 @@ cli.run();
 
 function generateAdvancedTemplate(name: string): string {
   return `#!/usr/bin/env node
-import { defineCLI } from "@easycli/core";
-import { colors, spinner, box, progress, table } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner, box, progress, table } from "easycli-ui";
 
 const cli = defineCLI({
   name: "${name}",

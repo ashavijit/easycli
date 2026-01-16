@@ -1,4 +1,4 @@
-# @easycli/config
+# easycli-config
 
 Zero-config configuration loader for EasyCLI apps.
 
@@ -12,13 +12,13 @@ Zero-config configuration loader for EasyCLI apps.
 ## Installation
 
 ```bash
-pnpm add @easycli/config
+pnpm add easycli-config
 ```
 
 ## Usage
 
 ```ts
-import { loadConfig } from "@easycli/config";
+import { loadConfig } from "easycli-config";
 
 interface MyConfig {
   port: number;

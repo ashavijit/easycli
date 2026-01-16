@@ -8,9 +8,9 @@
 
 *A complete replacement for Commander.js + Inquirer with better DX.*
 
-[![npm version](https://img.shields.io/npm/v/@easycli/core?style=flat-square)](https://www.npmjs.com/package/@easycli/core)
+[![npm version](https://img.shields.io/npm/v/easycli-core?style=flat-square)](https://www.npmjs.com/package/easycli-core)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ashavijit/easycli/ci.yml?branch=main&style=flat-square)](https://github.com/ashavijit/easycli/actions)
-[![License](https://img.shields.io/npm/l/@easycli/core?style=flat-square)](./LICENSE)
+[![License](https://img.shields.io/npm/l/easycli-core?style=flat-square)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
 [Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](./docs/building-beautiful-clis.md)
@@ -45,7 +45,7 @@ pnpm dev hello World
 ### Manual Installation
 
 ```bash
-pnpm add @easycli/core @easycli/ui
+pnpm add easycli-core easycli-ui
 ```
 
 ## 🚀 Quick Start
@@ -53,8 +53,8 @@ pnpm add @easycli/core @easycli/ui
 Create your first CLI in `src/index.ts`:
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors, box } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, box } from "easycli-ui";
 
 const cli = defineCLI({
   name: "my-cli",
@@ -93,7 +93,7 @@ node src/index.js greet "World" --loud
 Display beautiful bordered boxes for announcements and notices:
 
 ```typescript
-import { box } from "@easycli/ui";
+import { box } from "easycli-ui";
 
 console.log(box("Update available: 1.0.0 → 2.0.0", {
   borderStyle: "rounded",  // single, double, rounded, bold

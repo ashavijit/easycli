@@ -1,6 +1,6 @@
 {
-  "name": "@easycli/ui",
-  "version": "0.0.1",
+  "name": "easycli-ui",
+  "version": "0.0.2",
   "description": "Terminal UI components for EasyCLI",
   "type": "module",
   "main": "./dist/index.js",

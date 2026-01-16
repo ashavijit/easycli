@@ -1,4 +1,4 @@
-# @easycli/core
+# easycli-core
 
 The core engine for building powerful, type-safe CLI applications with EasyCLI.
 
@@ -12,7 +12,7 @@ The core engine for building powerful, type-safe CLI applications with EasyCLI.
 ## Installation
 
 ```bash
-pnpm add @easycli/core
+pnpm add easycli-core
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ pnpm add @easycli/core
 
 `commands/hello.ts`:
 ```ts
-import { defineCommand } from "@easycli/core";
+import { defineCommand } from "easycli-core";
 
 export default defineCommand({
   description: "Say hello",
@@ -38,7 +38,7 @@ export default defineCommand({
 
 `index.ts`:
 ```ts
-import { defineCLI } from "@easycli/core";
+import { defineCLI } from "easycli-core";
 import hello from "./commands/hello";
 
 const cli = defineCLI({

@@ -6,11 +6,19 @@ interface FlagDef {
   required?: boolean;
 }
 
+interface ArgDef {
+  type: "string" | "number";
+  optional?: boolean;
+  description?: string;
+}
+
 interface CommandDef {
-  args?: Record<string, string[] | string>;
+  args?: Record<string, string[] | "string" | "number" | ArgDef>;
   flags?: Record<string, FlagDef | string>;
   description?: string;
+  alias?: string | string[];
   commands?: Record<string, CommandDef>;
+  run?: unknown;
 }
 
 interface CLIConfig {
@@ -137,11 +145,17 @@ function buildUsageLine(command: string, def: CommandDef): string {
   return parts.join(" ");
 }
 
-function formatArgDescription(def: string[] | string): string {
+function formatArgDescription(def: string[] | "string" | "number" | ArgDef): string {
   if (Array.isArray(def)) {
     return `one of: ${def.join(", ")}`;
   }
-  return def;
+  if (typeof def === "object" && def !== null) {
+    const parts: string[] = [`(${def.type})`];
+    if (def.optional) parts.push("[optional]");
+    if (def.description) parts.push(def.description);
+    return parts.join(" ");
+  }
+  return `(${def})`;
 }
 
 function formatFlagLine(name: string, def: FlagDef | string): string {

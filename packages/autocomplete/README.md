@@ -1,4 +1,4 @@
-# @easycli/autocomplete
+# easycli-autocomplete
 
 Automatic shell completion generator for EasyCLI applications.
 
@@ -11,13 +11,13 @@ Automatic shell completion generator for EasyCLI applications.
 ## Installation
 
 ```bash
-pnpm add @easycli/autocomplete
+pnpm add easycli-autocomplete
 ```
 
 ## Usage
 
 ```ts
-import { generateCompletion } from "@easycli/autocomplete";
+import { generateCompletion } from "easycli-autocomplete";
 
 // Get your CLI config (usually from defineCLI)
 const config = {
@@ -36,8 +36,8 @@ console.log(script);
 Typically, you would add a `completion` command to your CLI:
 
 ```ts
-import { defineCommand } from "@easycli/core";
-import { generateCompletion } from "@easycli/autocomplete";
+import { defineCommand } from "easycli-core";
+import { generateCompletion } from "easycli-autocomplete";
 
 export const completion = defineCommand({
   description: "Generate completion script",

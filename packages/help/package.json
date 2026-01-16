@@ -1,6 +1,6 @@
 {
-  "name": "@easycli/help",
-  "version": "0.0.1",
+  "name": "easycli-help",
+  "version": "0.0.2",
   "description": "Help generator for EasyCLI",
   "type": "module",
   "main": "./dist/index.js",

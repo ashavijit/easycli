@@ -23,10 +23,10 @@ importers:
 
   examples/myapp:
     dependencies:
-      '@easycli/core':
+      easycli-core:
         specifier: workspace:*
         version: link:../../packages/core
-      '@easycli/ui':
+      easycli-ui:
         specifier: workspace:*
         version: link:../../packages/ui
     devDependencies:
@@ -42,10 +42,10 @@ importers:
 
   examples/nextjs-cli:
     dependencies:
-      '@easycli/core':
+      easycli-core:
         specifier: workspace:*
         version: link:../../packages/core
-      '@easycli/ui':
+      easycli-ui:
         specifier: workspace:*
         version: link:../../packages/ui
     devDependencies:
@@ -58,10 +58,10 @@ importers:
 
   examples/simple-app:
     dependencies:
-      '@easycli/core':
+      easycli-core:
         specifier: workspace:*
         version: link:../../packages/core
-      '@easycli/ui':
+      easycli-ui:
         specifier: workspace:*
         version: link:../../packages/ui
     devDependencies:
@@ -98,10 +98,10 @@ importers:
 
   packages/core:
     dependencies:
-      '@easycli/help':
+      easycli-help:
         specifier: workspace:*
         version: link:../help
-      '@easycli/prompts':
+      easycli-prompts:
         specifier: workspace:*
         version: link:../prompts
     devDependencies:
@@ -117,13 +117,13 @@ importers:
 
   packages/create-easycli:
     dependencies:
-      '@easycli/core':
+      easycli-core:
         specifier: workspace:*
         version: link:../core
-      '@easycli/prompts':
+      easycli-prompts:
         specifier: workspace:*
         version: link:../prompts
-      '@easycli/ui':
+      easycli-ui:
         specifier: workspace:*
         version: link:../ui
     devDependencies:

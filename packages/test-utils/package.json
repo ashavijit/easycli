@@ -1,6 +1,6 @@
 {
-  "name": "@easycli/test-utils",
-  "version": "0.0.1",
+  "name": "easycli-test-utils",
+  "version": "0.0.2",
   "description": "Test utilities for EasyCLI",
   "type": "module",
   "main": "./dist/index.js",
