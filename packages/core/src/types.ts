@@ -28,12 +28,30 @@ export interface AskMethods {
   multiselect<T extends string>(message: string, options: T[]): Promise<T[]>;
 }
 
+/** Options for rich error creation. */
+export interface RichErrorOptions {
+  hint?: string;
+  docs?: string;
+  exitCode?: number;
+}
+
+/** Task runner for multi-step workflows. */
+export interface Task {
+  step<T>(name: string, fn: () => T | Promise<T>): Promise<T>;
+  success(message: string): void;
+  fail(message: string): void;
+}
+
 export interface CLIContext<TConfig = Record<string, unknown>> {
   config: TConfig;
   ask: AskMethods;
   flow: <T extends unknown[]>(steps: { [K in keyof T]: () => Promise<T[K]> }) => Promise<T>;
   cwd: string;
   argv: string[];
+  /** Creates a rich error with hint and docs support. */
+  error(message: string, options?: RichErrorOptions): Error;
+  /** Creates a task runner for multi-step workflows. */
+  task(name: string): Task;
 }
 
 export type CommandHandler<

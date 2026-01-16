@@ -6,6 +6,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "dependencies": {
+    "easycli-ui": "workspace:*"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

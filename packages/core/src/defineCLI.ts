@@ -1,4 +1,4 @@
-import type { CLIConfig, CLIContext, FlagDef } from "./types.js";
+import type { CLIConfig, CLIContext, FlagDef, RichErrorOptions } from "./types.js";
 import { parseArgv } from "./parser/index.js";
 import { buildRouter, findCommand } from "./router.js";
 import { executeCommand } from "./executor.js";
@@ -7,6 +7,7 @@ import { CommandNotFoundError, formatError } from "./errors.js";
 import { normalizeFlagsSchema } from "./schema.js";
 import { createAsk, flow } from "easycli-prompts";
 import { generateHelp, generateCommandHelp } from "easycli-help";
+import { createError, task, formatRichError, RichError } from "easycli-ui";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -98,7 +99,9 @@ export function defineCLI(config: CLIConfig) {
       ask: createAsk(commandParsed.flags, userConfig),
       flow: flow,
       cwd: process.cwd(),
-      argv: args
+      argv: args,
+      error: (message: string, options?: RichErrorOptions) => createError(message, options),
+      task: (name: string) => task(name)
     };
 
     try {
@@ -118,10 +121,19 @@ export function defineCLI(config: CLIConfig) {
           args: {},
           flags: {}
         });
-        process.stderr.write(formatError(error) + "\n");
+        if (error instanceof RichError) {
+          process.stderr.write(formatRichError(error) + "\n");
+          await hookRunner.runOnExit(error.exitCode);
+          process.exit(error.exitCode);
+        } else {
+          process.stderr.write(formatError(error) + "\n");
+          await hookRunner.runOnExit(1);
+          process.exit(1);
+        }
+      } else {
+        await hookRunner.runOnExit(1);
+        process.exit(1);
       }
-      await hookRunner.runOnExit(1);
-      process.exit(1);
     }
   }
 

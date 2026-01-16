@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "dependencies": {
     "easycli-prompts": "workspace:*",
-    "easycli-help": "workspace:*"
+    "easycli-help": "workspace:*",
+    "easycli-ui": "workspace:*"
   },
   "exports": {
     ".": {

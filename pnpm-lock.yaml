@@ -21,6 +21,22 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  examples/deploy-cli:
+    dependencies:
+      easycli-core:
+        specifier: workspace:*
+        version: link:../../packages/core
+      easycli-ui:
+        specifier: workspace:*
+        version: link:../../packages/ui
+    devDependencies:
+      tsup:
+        specifier: ^8.0.1
+        version: 8.5.1(tsx@4.21.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+
   examples/myapp:
     dependencies:
       easycli-core:
@@ -41,22 +57,6 @@ importers:
         version: 5.9.3
 
   examples/nextjs-cli:
-    dependencies:
-      easycli-core:
-        specifier: workspace:*
-        version: link:../../packages/core
-      easycli-ui:
-        specifier: workspace:*
-        version: link:../../packages/ui
-    devDependencies:
-      tsup:
-        specifier: ^8.0.0
-        version: 8.5.1(tsx@4.21.0)(typescript@5.9.3)
-      typescript:
-        specifier: ^5.0.0
-        version: 5.9.3
-
-  examples/simple-app:
     dependencies:
       easycli-core:
         specifier: workspace:*
@@ -104,6 +104,9 @@ importers:
       easycli-prompts:
         specifier: workspace:*
         version: link:../prompts
+      easycli-ui:
+        specifier: workspace:*
+        version: link:../ui
     devDependencies:
       rimraf:
         specifier: ^5.0.5
@@ -138,6 +141,10 @@ importers:
         version: 5.9.3
 
   packages/help:
+    dependencies:
+      easycli-ui:
+        specifier: workspace:*
+        version: link:../ui
     devDependencies:
       rimraf:
         specifier: ^5.0.5
