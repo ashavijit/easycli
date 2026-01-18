@@ -4,14 +4,14 @@ Complete API documentation for all EasyCLI packages.
 
 ---
 
-## @easycli/core
+## easycli-core
 
 ### defineCLI
 
 Creates a CLI application.
 
 ```typescript
-import { defineCLI } from "@easycli/core";
+import { defineCLI } from "easycli-core";
 
 const cli = defineCLI({
   name: "my-app",
@@ -43,7 +43,7 @@ cli.run();
 Type-safe command definition helper.
 
 ```typescript
-import { defineCommand } from "@easycli/core";
+import { defineCommand } from "easycli-core";
 
 export default defineCommand({
   description: "Create a new project",
@@ -172,7 +172,7 @@ async run(_, ctx) {
 Graceful shutdown on SIGINT/SIGTERM.
 
 ```typescript
-import { installSignalHandlers, onCleanup, resetTerminal } from "@easycli/core";
+import { installSignalHandlers, onCleanup, resetTerminal } from "easycli-core";
 
 onCleanup(async () => {
   await database.disconnect();
@@ -205,7 +205,7 @@ hooks: {
 
 ---
 
-## @easycli/ui
+## easycli-ui
 
 ### colors
 
@@ -269,7 +269,7 @@ colors.bgRed(colors.white(colors.bold("CRITICAL")))
 Animated loading spinner.
 
 ```typescript
-import { spinner } from "@easycli/ui";
+import { spinner } from "easycli-ui";
 
 const s = spinner("Loading...");
 s.start();
@@ -291,7 +291,7 @@ s.success("Done!");
 Progress bar.
 
 ```typescript
-import { progress } from "@easycli/ui";
+import { progress } from "easycli-ui";
 
 const bar = progress(100);
 bar.update(50);
@@ -315,7 +315,7 @@ Output:
 Formatted table output.
 
 ```typescript
-import { table } from "@easycli/ui";
+import { table } from "easycli-ui";
 
 table([
   { Name: "Alice", Role: "Admin", Status: "Active" },
@@ -340,7 +340,7 @@ Output:
 Bordered box.
 
 ```typescript
-import { box } from "@easycli/ui";
+import { box } from "easycli-ui";
 
 console.log(box("Hello World!", {
   title: "Greeting",
@@ -371,7 +371,7 @@ console.log(box("Hello World!", {
 Error with hints and documentation links.
 
 ```typescript
-import { createError, RichError } from "@easycli/ui";
+import { createError, RichError } from "easycli-ui";
 
 throw createError("Config file not found", {
   hint: "Run 'my-cli init' to create a config file",
@@ -386,7 +386,7 @@ throw createError("Config file not found", {
 Multi-step task runner.
 
 ```typescript
-import { task } from "@easycli/ui";
+import { task } from "easycli-ui";
 
 const t = task("Deployment");
 await t.step("Building", build);
@@ -397,14 +397,14 @@ t.success("Complete!");
 
 ---
 
-## @easycli/prompts
+## easycli-prompts
 
 ### sanitize
 
 Input sanitization utilities.
 
 ```typescript
-import { sanitize, sanitizeWithLimit, isValidPath } from "@easycli/prompts";
+import { sanitize, sanitizeWithLimit, isValidPath } from "easycli-prompts";
 
 const clean = sanitize(userInput);
 const limited = sanitizeWithLimit(userInput, 100);
@@ -420,14 +420,14 @@ const safe = isValidPath(pathInput);
 
 ---
 
-## @easycli/help
+## easycli-help
 
 ### generateHelp
 
 Generate main help text.
 
 ```typescript
-import { generateHelp } from "@easycli/help";
+import { generateHelp } from "easycli-help";
 
 const help = generateHelp(config);
 console.log(help);
@@ -438,7 +438,7 @@ console.log(help);
 Generate command-specific help.
 
 ```typescript
-import { generateCommandHelp } from "@easycli/help";
+import { generateCommandHelp } from "easycli-help";
 
 const help = generateCommandHelp("my-cli", ["deploy"], command);
 ```
@@ -448,7 +448,7 @@ const help = generateCommandHelp("my-cli", ["deploy"], command);
 Generate help as JSON.
 
 ```typescript
-import { generateHelpJson } from "@easycli/help";
+import { generateHelpJson } from "easycli-help";
 
 const json = generateHelpJson(config);
 ```
@@ -458,7 +458,7 @@ const json = generateHelpJson(config);
 Generate help as Markdown.
 
 ```typescript
-import { generateHelpMarkdown } from "@easycli/help";
+import { generateHelpMarkdown } from "easycli-help";
 
 const md = generateHelpMarkdown(config);
 ```

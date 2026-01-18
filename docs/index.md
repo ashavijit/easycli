@@ -55,8 +55,8 @@ pnpm dev hello World
 ## Example
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors, spinner, box } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner, box } from "easycli-ui";
 
 const cli = defineCLI({
   name: "deploy",
@@ -98,12 +98,12 @@ cli.run();
 
 | Package | Description |
 |---------|-------------|
-| `@easycli/core` | CLI definition, parsing, routing |
-| `@easycli/ui` | Colors, spinners, progress, tables, boxes |
-| `@easycli/prompts` | Interactive prompts, sanitization |
-| `@easycli/help` | Help text generation |
-| `@easycli/config` | Config file loading |
-| `@easycli/plugins` | Plugin system |
+| `easycli-core` | CLI definition, parsing, routing |
+| `easycli-ui` | Colors, spinners, progress, tables, boxes |
+| `easycli-prompts` | Interactive prompts, sanitization |
+| `easycli-help` | Help text generation |
+| `easycli-config` | Config file loading |
+| `easycli-plugins` | Plugin system |
 | `create-easycli` | Project scaffolder |
 
 ---

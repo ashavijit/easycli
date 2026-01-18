@@ -21,7 +21,7 @@ This scaffolds a complete project with TypeScript, build tooling, and example co
 ## Manual Installation
 
 ```bash
-pnpm add @easycli/core @easycli/ui
+pnpm add easycli-core easycli-ui
 pnpm add -D typescript tsup tsx
 ```
 
@@ -32,8 +32,8 @@ pnpm add -D typescript tsup tsx
 Create `src/index.ts`:
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors } from "easycli-ui";
 
 const cli = defineCLI({
   name: "hello",
@@ -77,8 +77,8 @@ node dist/index.js greet World
 ## Add Interactive Prompts
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors, spinner } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner } from "easycli-ui";
 
 const cli = defineCLI({
   name: "hello",
@@ -223,8 +223,8 @@ my-cli/
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@easycli/core": "^0.0.1",
-    "@easycli/ui": "^0.0.1"
+    "easycli-core": "^0.0.1",
+    "easycli-ui": "^0.0.1"
   },
   "devDependencies": {
     "tsup": "^8.0.1",

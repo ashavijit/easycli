@@ -29,7 +29,7 @@ This guide covers the complete **EasyCLI** API with examples.
 The main entry point for creating a CLI application.
 
 ```typescript
-import { defineCLI } from "@easycli/core";
+import { defineCLI } from "easycli-core";
 
 const cli = defineCLI({
   name: "my-app",
@@ -109,7 +109,7 @@ const cli = defineCLI({
 Zero-dependency ANSI colors with automatic TTY detection.
 
 ```typescript
-import { colors } from "@easycli/ui";
+import { colors } from "easycli-ui";
 ```
 
 ### Styles
@@ -172,7 +172,7 @@ const warn = (msg: string) => colors.yellow(`⚠ ${msg}`);
 Animated spinners for async operations.
 
 ```typescript
-import { spinner } from "@easycli/ui";
+import { spinner } from "easycli-ui";
 ```
 
 ### Methods
@@ -213,7 +213,7 @@ Output:
 Progress bars for deterministic tasks.
 
 ```typescript
-import { progress } from "@easycli/ui";
+import { progress } from "easycli-ui";
 ```
 
 ### Methods
@@ -250,7 +250,7 @@ Output:
 Beautiful tables with automatic column sizing.
 
 ```typescript
-import { table } from "@easycli/ui";
+import { table } from "easycli-ui";
 ```
 
 ### Usage
@@ -285,7 +285,7 @@ The table automatically colors status values:
 Bordered boxes for announcements and notices.
 
 ```typescript
-import { box } from "@easycli/ui";
+import { box } from "easycli-ui";
 ```
 
 ### Options
@@ -474,7 +474,7 @@ const cli = defineCLI({
 Create reusable hook bundles:
 
 ```typescript
-import { definePlugin } from "@easycli/plugins";
+import { definePlugin } from "easycli-plugins";
 
 const analyticsPlugin = definePlugin({
   name: "analytics",
@@ -512,7 +512,7 @@ Signal handlers are installed automatically when you call `cli.run()`. The CLI w
 Register cleanup functions to run before exit:
 
 ```typescript
-import { onCleanup } from "@easycli/core";
+import { onCleanup } from "easycli-core";
 
 onCleanup(async () => {
   await database.disconnect();
@@ -526,7 +526,7 @@ onCleanup(async () => {
 For advanced use cases:
 
 ```typescript
-import { installSignalHandlers, resetTerminal } from "@easycli/core";
+import { installSignalHandlers, resetTerminal } from "easycli-core";
 
 installSignalHandlers();
 onCleanup(resetTerminal);
@@ -539,7 +539,7 @@ onCleanup(resetTerminal);
 Protect your CLI from injection attacks with built-in sanitization.
 
 ```typescript
-import { sanitize, sanitizeWithLimit, isValidPath } from "@easycli/prompts";
+import { sanitize, sanitizeWithLimit, isValidPath } from "easycli-prompts";
 ```
 
 ### Methods
@@ -637,8 +637,8 @@ my-cli build -f one.ts -f two.ts
 ## Putting It All Together
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors, spinner, box, table, progress } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner, box, table, progress } from "easycli-ui";
 
 const cli = defineCLI({
   name: "deploy-cli",

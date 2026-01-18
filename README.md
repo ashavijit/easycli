@@ -6,12 +6,16 @@
 
 *A complete replacement for Commander.js + Inquirer with better DX.*
 
-[![npm version](https://img.shields.io/npm/v/easycli-core?style=flat-square)](https://www.npmjs.com/package/easycli-core)
+[![npm version](https://img.shields.io/npm/v/easycli-core?style=flat-square&color=blue)](https://www.npmjs.com/package/easycli-core)
+[![npm downloads](https://img.shields.io/npm/dm/easycli-core?style=flat-square&color=green)](https://www.npmjs.com/package/easycli-core)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/easycli-core?style=flat-square&color=orange)](https://bundlephobia.com/package/easycli-core)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ashavijit/easycli/ci.yml?branch=main&style=flat-square)](https://github.com/ashavijit/easycli/actions)
 [![License](https://img.shields.io/npm/l/easycli-core?style=flat-square)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](./CONTRIBUTING.md)
 
-[Features](#features) | [Quick Start](#quick-start) | [Documentation](#documentation) | [API Reference](./docs/api-reference.md)
+[Features](#features) | [Quick Start](#quick-start) | [Documentation](#documentation) | [Tutorial](./docs/tutorial.md)
 
 </div>
 
@@ -46,8 +50,8 @@ pnpm dev hello World
 ## Example
 
 ```typescript
-import { defineCLI } from "@easycli/core";
-import { colors, spinner, box } from "@easycli/ui";
+import { defineCLI } from "easycli-core";
+import { colors, spinner, box } from "easycli-ui";
 
 const cli = defineCLI({
   name: "deploy-cli",
@@ -94,12 +98,12 @@ deploy-cli up production --force --file api.ts --file worker.ts
 
 | Package | Description | Install |
 |---------|-------------|---------|
-| `@easycli/core` | CLI definition, parsing, routing | `pnpm add @easycli/core` |
-| `@easycli/ui` | Colors, spinners, progress, tables, boxes | `pnpm add @easycli/ui` |
-| `@easycli/prompts` | Interactive prompts, sanitization | `pnpm add @easycli/prompts` |
-| `@easycli/help` | Help text generation | `pnpm add @easycli/help` |
-| `@easycli/config` | Config file loading | `pnpm add @easycli/config` |
-| `@easycli/plugins` | Plugin system | `pnpm add @easycli/plugins` |
+| `easycli-core` | CLI definition, parsing, routing | `pnpm add easycli-core` |
+| `easycli-ui` | Colors, spinners, progress, tables, boxes | `pnpm add easycli-ui` |
+| `easycli-prompts` | Interactive prompts, sanitization | `pnpm add easycli-prompts` |
+| `easycli-help` | Help text generation | `pnpm add easycli-help` |
+| `easycli-config` | Config file loading | `pnpm add easycli-config` |
+| `easycli-plugins` | Plugin system | `pnpm add easycli-plugins` |
 | `create-easycli` | Project scaffolder | `npx create-easycli` |
 
 ---
@@ -109,7 +113,7 @@ deploy-cli up production --force --file api.ts --file worker.ts
 ### Colors
 
 ```typescript
-import { colors } from "@easycli/ui";
+import { colors } from "easycli-ui";
 
 console.log(colors.green("Success!"));
 console.log(colors.bold(colors.red("Error!")));
@@ -119,7 +123,7 @@ console.log(colors.bgCyan(colors.white("Highlight")));
 ### Spinner
 
 ```typescript
-import { spinner } from "@easycli/ui";
+import { spinner } from "easycli-ui";
 
 const s = spinner("Loading...");
 s.start();
@@ -130,7 +134,7 @@ s.success("Done!");
 ### Progress Bar
 
 ```typescript
-import { progress } from "@easycli/ui";
+import { progress } from "easycli-ui";
 
 const bar = progress(100);
 for (let i = 0; i <= 100; i += 10) {
@@ -143,7 +147,7 @@ bar.complete();
 ### Table
 
 ```typescript
-import { table } from "@easycli/ui";
+import { table } from "easycli-ui";
 
 table([
   { Name: "api", Status: "Running", Port: 3000 },
@@ -154,7 +158,7 @@ table([
 ### Box
 
 ```typescript
-import { box } from "@easycli/ui";
+import { box } from "easycli-ui";
 
 console.log(box("Hello World!", {
   title: "Greeting",
@@ -171,6 +175,7 @@ console.log(box("Hello World!", {
 | Document | Description |
 |----------|-------------|
 | [Getting Started](./docs/getting-started.md) | Setup in 5 minutes |
+| [Tutorial](./docs/tutorial.md) | Build a CLI from scratch |
 | [API Reference](./docs/api-reference.md) | Complete API docs |
 | [Building Beautiful CLIs](./docs/building-beautiful-clis.md) | Full feature guide |
 | [Why EasyCLI?](./docs/why-easycli.md) | Framework comparison |
