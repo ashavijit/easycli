@@ -114,6 +114,7 @@ cli.run();
 - [API Reference](api-reference) - Full API docs
 - [Building Beautiful CLIs](building-beautiful-clis) - Complete guide
 - [Why EasyCLI?](why-easycli) - Framework comparisons
+- [Tutorial](tutorial) - Complete guide
 
 ---
 

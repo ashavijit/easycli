@@ -90,10 +90,10 @@ importers:
 
   examples/test-features:
     dependencies:
-      '@easycli/core':
+      easycli-core:
         specifier: file:../../packages/core
-        version: easycli-core@file:packages/core
-      '@easycli/ui':
+        version: file:packages/core
+      easycli-ui:
         specifier: file:../../packages/ui
         version: link:../../packages/ui
     devDependencies:

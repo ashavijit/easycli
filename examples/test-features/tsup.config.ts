@@ -5,5 +5,5 @@ export default defineConfig({
   format: ["esm"],
   target: "node18",
   clean: true,
-  dts: true
+  dts: false
 });

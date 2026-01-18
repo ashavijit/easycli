@@ -9,8 +9,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@easycli/core": "file:../../packages/core",
-    "@easycli/ui": "file:../../packages/ui"
+    "easycli-core": "file:../../packages/core",
+    "easycli-ui": "file:../../packages/ui"
   },
   "devDependencies": {
     "tsup": "^8.0.1",
