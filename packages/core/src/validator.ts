@@ -7,6 +7,9 @@ import type {
 } from "./types.js";
 import { normalizeFlagsSchema, normalizeArgsSchema } from "./schema.js";
 
+/**
+ * Validates command arguments and flags against their definitions.
+ */
 export function validateCommand(
   command: CommandDef,
   args: string[],
@@ -56,7 +59,7 @@ function validateFlag(
     });
   }
 
-  if (value !== undefined) {
+  if (value !== undefined && !Array.isArray(value)) {
     const expectedType = def.type;
     const actualType = typeof value;
 
@@ -85,21 +88,31 @@ function validateFlag(
     }
   }
 
+  if (def.array && value !== undefined && !Array.isArray(value)) {
+    errors.push({
+      field: name,
+      message: `Flag --${name} expects multiple values`,
+      value
+    });
+  }
+
   return errors;
 }
 
 function validateArg(
   name: string,
   value: string | undefined,
-  def: { type: "string" | "number" | "enum"; values?: string[] }
+  def: { type: "string" | "number" | "enum"; values?: string[]; optional?: boolean }
 ): ValidationErrorInfo[] {
   const errors: ValidationErrorInfo[] = [];
 
   if (value === undefined) {
-    errors.push({
-      field: name,
-      message: `Argument <${name}> is required`
-    });
+    if (!def.optional) {
+      errors.push({
+        field: name,
+        message: `Argument <${name}> is required`
+      });
+    }
     return errors;
   }
 
@@ -127,6 +140,9 @@ function validateArg(
   return errors;
 }
 
+/**
+ * Applies default values to flags that weren't provided.
+ */
 export function applyDefaults(
   flags: Map<string, FlagValue>,
   defs: Record<string, FlagDef>
@@ -139,4 +155,5 @@ export function applyDefaults(
   }
   return result;
 }
+
 

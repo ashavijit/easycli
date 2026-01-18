@@ -5,6 +5,7 @@ import { executeCommand } from "./executor.js";
 import { createHookRunner } from "./hooks.js";
 import { CommandNotFoundError, formatError } from "./errors.js";
 import { normalizeFlagsSchema } from "./schema.js";
+import { installSignalHandlers, resetTerminal, onCleanup } from "./signals.js";
 import { createAsk, flow } from "easycli-prompts";
 import { generateHelp, generateCommandHelp } from "easycli-help";
 import { createError, task, formatRichError, RichError } from "easycli-ui";
@@ -40,6 +41,9 @@ export function defineCLI(config: CLIConfig) {
 
   async function run(argv?: string[]): Promise<void> {
     const args = argv ?? process.argv.slice(2);
+
+    installSignalHandlers();
+    onCleanup(resetTerminal);
 
     await hookRunner.runOnInit();
 
@@ -96,7 +100,8 @@ export function defineCLI(config: CLIConfig) {
 
     const ctx: CLIContext = {
       config: userConfig,
-      ask: createAsk(commandParsed.flags, userConfig),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ask: createAsk(commandParsed.flags as any, userConfig),
       flow: flow,
       cwd: process.cwd(),
       argv: args,

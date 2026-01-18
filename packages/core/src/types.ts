@@ -2,13 +2,15 @@ export type FlagType = "string" | "boolean" | "number";
 
 export interface FlagDef {
   type: FlagType;
-  default?: string | boolean | number;
+  default?: string | boolean | number | string[] | number[];
   alias?: string;
   description?: string;
   required?: boolean;
+  /** When true, multiple flag occurrences collect into an array. */
+  array?: boolean;
 }
 
-export type FlagValue = string | boolean | number | undefined;
+export type FlagValue = string | boolean | number | string[] | number[] | undefined;
 
 export type FlagsSchema = Record<string, FlagDef | FlagType>;
 

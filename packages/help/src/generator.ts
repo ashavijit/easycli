@@ -29,6 +29,7 @@ interface FlagDef {
   alias?: string;
   description?: string;
   required?: boolean;
+  array?: boolean;
 }
 
 interface ArgDef {
@@ -37,8 +38,10 @@ interface ArgDef {
   description?: string;
 }
 
+type ArgsSchema = Record<string, string[] | "string" | "number" | ArgDef>;
+
 interface CommandDef {
-  args?: Record<string, string[] | "string" | "number" | ArgDef>;
+  args?: ArgsSchema;
   flags?: Record<string, FlagDef | string>;
   description?: string;
   alias?: string | string[];

@@ -88,6 +88,25 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  examples/test-features:
+    dependencies:
+      '@easycli/core':
+        specifier: file:../../packages/core
+        version: easycli-core@file:packages/core
+      '@easycli/ui':
+        specifier: file:../../packages/ui
+        version: link:../../packages/ui
+    devDependencies:
+      tsup:
+        specifier: ^8.0.1
+        version: 8.5.1(tsx@4.21.0)(typescript@5.9.3)
+      tsx:
+        specifier: ^4.7.0
+        version: 4.21.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+
   packages/autocomplete:
     devDependencies:
       rimraf:
@@ -685,6 +704,9 @@ packages:
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  easycli-core@file:packages/core:
+    resolution: {directory: packages/core, type: directory}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1510,6 +1532,12 @@ snapshots:
       esutils: 2.0.3
 
   eastasianwidth@0.2.0: {}
+
+  easycli-core@file:packages/core:
+    dependencies:
+      easycli-help: link:packages/help
+      easycli-prompts: link:packages/prompts
+      easycli-ui: link:packages/ui
 
   emoji-regex@8.0.0: {}
 

@@ -6,4 +6,5 @@ export { suggestSimilar, formatMissingArg, formatUnknownFlag } from "./hints.js"
 export { buildRouter, findCommand } from "./router.js";
 export { validateCommand } from "./validator.js";
 export { createHookRunner } from "./hooks.js";
+export { installSignalHandlers, onCleanup, resetTerminal } from "./signals.js";
 

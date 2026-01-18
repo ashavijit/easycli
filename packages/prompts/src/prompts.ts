@@ -1,4 +1,5 @@
 import { createInterface } from "node:readline";
+import { sanitize } from "./sanitize.js";
 
 /**
  * Interface for interactive prompt methods.
@@ -44,7 +45,7 @@ export interface AskMethods {
   multiselect<T extends string>(message: string, options: T[]): Promise<T[]>;
 }
 
-type FlagValue = string | boolean | number | undefined;
+type FlagValue = string | boolean | number | string[] | number[] | undefined;
 
 /**
  * Creates a set of prompt methods backed by readline.
@@ -66,9 +67,9 @@ export function createAsk(
     async text(message: string, defaultValue?: string): Promise<string> {
       const key = toKey(message);
       const flagValue = flags.get(key);
-      if (typeof flagValue === "string") return flagValue;
+      if (typeof flagValue === "string") return sanitize(flagValue);
       const configValue = config[key];
-      if (typeof configValue === "string") return configValue;
+      if (typeof configValue === "string") return sanitize(configValue);
       return prompt(message, defaultValue);
     },
 
@@ -159,10 +160,11 @@ async function prompt(message: string, defaultValue?: string): Promise<string> {
   return new Promise((resolve) => {
     rl.question(`${question}: `, (answer) => {
       rl.close();
-      if (!answer && defaultValue) {
-        resolve(defaultValue);
+      const clean = sanitize(answer);
+      if (!clean && defaultValue) {
+        resolve(sanitize(defaultValue));
       } else {
-        resolve(answer);
+        resolve(clean);
       }
     });
   });

@@ -20,19 +20,19 @@ export function normalizeFlagsSchema(
 
 export function normalizeArgsSchema(
   args?: ArgsSchema
-): Record<string, { type: "string" | "number" | "enum"; values?: string[] }> {
+): Record<string, { type: "string" | "number" | "enum"; values?: string[]; optional?: boolean }> {
   if (!args) return {};
   const normalized: Record<
     string,
-    { type: "string" | "number" | "enum"; values?: string[] }
+    { type: "string" | "number" | "enum"; values?: string[]; optional?: boolean }
   > = {};
   for (const [key, value] of Object.entries(args)) {
     if (Array.isArray(value)) {
       normalized[key] = { type: "enum", values: value };
     } else if (typeof value === "string") {
-      normalized[key] = { type: value };
+      normalized[key] = { type: value as "string" | "number" };
     } else {
-      normalized[key] = { type: value.type };
+      normalized[key] = { type: value.type, optional: value.optional };
     }
   }
   return normalized;

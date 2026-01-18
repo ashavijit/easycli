@@ -4,10 +4,13 @@ import type { FlagDef } from "../types.js";
 
 export interface GrammarNode {
   commands: string[];
-  flags: Map<string, string | boolean | number>;
+  flags: Map<string, string | boolean | number | string[] | number[]>;
   args: string[];
 }
 
+/**
+ * Parses tokens into a grammar node with commands, flags, and args.
+ */
 export function parseGrammar(
   tokens: Token[],
   flagDefs: Record<string, FlagDef>,
@@ -34,7 +37,8 @@ export function parseGrammar(
     if (expectValue !== null) {
       const def = flagDefs[expectValue];
       if (def) {
-        result.flags.set(expectValue, coerceValue(token.value, def.type));
+        const coerced = coerceValue(token.value, def.type);
+        setFlagValue(result.flags, expectValue, coerced, def.array ?? false);
       }
       expectValue = null;
       continue;
@@ -43,7 +47,7 @@ export function parseGrammar(
     if (token.type === TokenType.Flag) {
       const def = flagDefs[token.value];
       if (def?.type === "boolean") {
-        result.flags.set(token.value, true);
+        setFlagValue(result.flags, token.value, true, def.array ?? false);
       } else if (def) {
         expectValue = token.value;
       } else {
@@ -58,7 +62,7 @@ export function parseGrammar(
       const flagName = longName ?? token.value;
       const def = flagDefs[flagName];
       if (def?.type === "boolean") {
-        result.flags.set(flagName, true);
+        setFlagValue(result.flags, flagName, true, def.array ?? false);
       } else if (def) {
         expectValue = flagName;
       } else {
@@ -80,6 +84,27 @@ export function parseGrammar(
   return result;
 }
 
+function setFlagValue(
+  flags: Map<string, string | boolean | number | string[] | number[]>,
+  name: string,
+  value: string | boolean | number,
+  isArray: boolean
+): void {
+  if (!isArray) {
+    flags.set(name, value);
+    return;
+  }
+
+  const existing = flags.get(name);
+  if (Array.isArray(existing)) {
+    existing.push(value as never);
+  } else if (existing !== undefined) {
+    flags.set(name, [existing, value] as string[] | number[]);
+  } else {
+    flags.set(name, [value] as string[] | number[]);
+  }
+}
+
 function coerceValue(
   value: string,
   type: "string" | "boolean" | "number"
@@ -93,3 +118,4 @@ function coerceValue(
       return value;
   }
 }
+
