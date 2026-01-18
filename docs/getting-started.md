@@ -4,18 +4,25 @@ Get up and running with EasyCLI in under 5 minutes.
 
 ---
 
-## Installation
+## Quick Start (Recommended)
 
-```bash
-npm install easycli-core easycli-ui
-```
-
-Or use the scaffolding tool:
+The fastest way to create a new CLI:
 
 ```bash
 npx create-easycli my-cli
 cd my-cli
-npm install
+pnpm dev hello World
+```
+
+This scaffolds a complete project with TypeScript, build tooling, and example commands.
+
+---
+
+## Manual Installation
+
+```bash
+pnpm add @easycli/core @easycli/ui
+pnpm add -D typescript tsup tsx
 ```
 
 ---
@@ -25,9 +32,8 @@ npm install
 Create `src/index.ts`:
 
 ```typescript
-#!/usr/bin/env node
-import { defineCLI } from "easycli-core";
-import { colors } from "easycli-ui";
+import { defineCLI } from "@easycli/core";
+import { colors } from "@easycli/ui";
 
 const cli = defineCLI({
   name: "hello",
@@ -52,8 +58,7 @@ cli.run();
 ## Build and Run
 
 ```bash
-npx tsup src/index.ts --format esm
-node dist/index.js greet World
+npx tsx src/index.ts greet World
 ```
 
 Output:
@@ -61,20 +66,26 @@ Output:
 Hello, World!
 ```
 
+For production:
+```bash
+npx tsup src/index.ts --format esm
+node dist/index.js greet World
+```
+
 ---
 
-## Add Interactive Features
+## Add Interactive Prompts
 
 ```typescript
-import { defineCLI } from "easycli-core";
-import { colors, spinner } from "easycli-ui";
+import { defineCLI } from "@easycli/core";
+import { colors, spinner } from "@easycli/ui";
 
 const cli = defineCLI({
   name: "hello",
   version: "1.0.0",
   commands: {
     greet: {
-      description: "Say hello",
+      description: "Say hello interactively",
       async run(_, ctx) {
         const name = await ctx.ask.text("What is your name?");
         
@@ -94,7 +105,67 @@ cli.run();
 
 ---
 
-## Add Error Handling
+## Add Flags and Options
+
+```typescript
+commands: {
+  greet: {
+    args: {
+      name: { type: "string", optional: true }
+    },
+    flags: {
+      loud: { type: "boolean", alias: "l", description: "Shout it" },
+      times: { type: "number", default: 1, description: "Repeat N times" }
+    },
+    run({ name, loud, times }) {
+      const greeting = `Hello, ${name || "stranger"}!`;
+      const message = loud ? greeting.toUpperCase() : greeting;
+      
+      for (let i = 0; i < times; i++) {
+        console.log(message);
+      }
+    }
+  }
+}
+```
+
+Usage:
+```bash
+my-cli greet Alice --loud --times 3
+my-cli greet -l -t 3
+```
+
+---
+
+## Add Subcommands
+
+```typescript
+commands: {
+  db: {
+    description: "Database commands",
+    commands: {
+      migrate: {
+        description: "Run migrations",
+        run() { console.log("Migrating..."); }
+      },
+      seed: {
+        description: "Seed database",
+        run() { console.log("Seeding..."); }
+      }
+    }
+  }
+}
+```
+
+Usage:
+```bash
+my-cli db migrate
+my-cli db seed
+```
+
+---
+
+## Error Handling
 
 ```typescript
 commands: {
@@ -104,14 +175,11 @@ commands: {
       if (!process.env.API_KEY) {
         throw ctx.error("API key required", {
           hint: "Set the API_KEY environment variable",
-          docs: "https://docs.example.com/auth"
+          exitCode: 1
         });
       }
       
-      const t = ctx.task(`Deploying to ${env}`);
-      await t.step("Building", build);
-      await t.step("Uploading", upload);
-      t.success("Done!");
+      console.log(`Deploying to ${env}...`);
     }
   }
 }
@@ -126,12 +194,12 @@ Recommended structure for larger CLIs:
 ```
 my-cli/
   src/
-    index.ts          # Entry point
+    index.ts           # Entry point
     commands/
-      deploy.ts       # Deploy command
+      deploy.ts        # Deploy command
       db/
-        migrate.ts    # db migrate subcommand
-        seed.ts       # db seed subcommand
+        migrate.ts     # db migrate subcommand
+        seed.ts        # db seed subcommand
   package.json
   tsconfig.json
   tsup.config.ts
@@ -139,9 +207,56 @@ my-cli/
 
 ---
 
+## package.json
+
+```json
+{
+  "name": "my-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "my-cli": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@easycli/core": "^0.0.1",
+    "@easycli/ui": "^0.0.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
+```
+
+---
+
+## tsup.config.ts
+
+```typescript
+import { defineConfig } from "tsup";
+
+export default defineConfig({
+  entry: ["src/index.ts"],
+  format: ["esm"],
+  target: "node18",
+  clean: true,
+  dts: true,
+  banner: {
+    js: "#!/usr/bin/env node"
+  }
+});
+```
+
+---
+
 ## Next Steps
 
+- [API Reference](./api-reference.md) - Full API documentation
+- [Building Beautiful CLIs](./building-beautiful-clis.md) - Complete feature guide
 - [Why EasyCLI?](./why-easycli.md) - Framework comparisons
-- [Features](./features.md) - Complete feature guide
-- [API Reference](./api-reference.md) - Full API docs
-- [Building Beautiful CLIs](./building-beautiful-clis.md) - End-to-end guide

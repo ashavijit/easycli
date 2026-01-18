@@ -5,7 +5,9 @@ title: EasyCLI - Build Beautiful CLIs with TypeScript
 
 # EasyCLI
 
-**Build beautiful CLIs with TypeScript**
+**The modern CLI framework for TypeScript**
+
+A complete replacement for Commander.js + Inquirer with better DX.
 
 [![npm](https://img.shields.io/npm/v/easycli-core)](https://www.npmjs.com/package/easycli-core)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
@@ -13,37 +15,75 @@ title: EasyCLI - Build Beautiful CLIs with TypeScript
 
 ---
 
-## Features
-
-- **Type-Safe Commands** - Full TypeScript inference from schema to handler
-- **Rich Error System** - Actionable errors with hints and documentation links
-- **Task Runner API** - Multi-step workflows with progress tracking
-- **15+ UI Components** - Spinners, progress bars, tables, cards, trees, toasts, dashboards
-- **Interactive Prompts** - Built-in text, password, confirm, select, and multiselect
-- **Colored Help** - Beautiful, colorized help output generated automatically
-
----
-
 ## Quick Start
 
 ```bash
-npm install easycli-core easycli-ui
+npx create-easycli my-cli
+cd my-cli
+pnpm dev hello World
 ```
 
+---
+
+## Why EasyCLI?
+
+| Feature | Commander.js | Inquirer | EasyCLI |
+|---------|--------------|----------|---------|
+| Type inference | Manual | Manual | Automatic |
+| UI components | None | Prompts only | 15+ components |
+| Error handling | Basic | None | Rich errors with hints |
+| Signal handling | Manual | Partial | Built-in |
+| Scaffolding | None | None | `npx create-easycli` |
+
+---
+
+## Features
+
+- **Type-Safe Commands** - Full TypeScript inference from schema to handler
+- **Rich UI Components** - Spinners, progress bars, tables, boxes, colors
+- **Interactive Prompts** - Text, password, confirm, select, multiselect
+- **Signal Handling** - Graceful SIGINT/SIGTERM with cleanup hooks
+- **Input Sanitization** - Built-in protection against injection attacks
+- **Array Flags** - Collect `--flag a --flag b` into arrays
+- **Optional Arguments** - `args: { name: { type: "string", optional: true } }`
+- **Nested Subcommands** - `my-cli db migrate`, `my-cli db seed`
+- **Rich Errors** - Actionable errors with hints and exit codes
+- **Auto Help** - Colorized help generated from schema
+
+---
+
+## Example
+
 ```typescript
-import { defineCLI } from "easycli-core";
+import { defineCLI } from "@easycli/core";
+import { colors, spinner, box } from "@easycli/ui";
 
 const cli = defineCLI({
-  name: "myapp",
+  name: "deploy",
   version: "1.0.0",
   commands: {
-    deploy: {
+    up: {
+      description: "Deploy to environment",
       args: { env: ["staging", "production"] },
-      async run({ env }, ctx) {
-        const t = ctx.task("Deploying");
-        await t.step("Build", build);
-        await t.step("Upload", upload);
-        t.success("Done!");
+      flags: {
+        force: { type: "boolean", alias: "f" },
+        replicas: { type: "number", default: 3 }
+      },
+      async run({ env, force, replicas }, ctx) {
+        if (!force) {
+          const proceed = await ctx.ask.confirm(`Deploy to ${env}?`);
+          if (!proceed) return;
+        }
+
+        const s = spinner(`Deploying to ${env}...`);
+        s.start();
+        await deploy(env, replicas);
+        s.success("Deployed!");
+
+        console.log(box([
+          `Environment: ${colors.cyan(env)}`,
+          `Replicas: ${replicas}`
+        ], { borderStyle: "rounded" }));
       }
     }
   }
@@ -54,28 +94,25 @@ cli.run();
 
 ---
 
-## UI Components
+## Packages
 
-| Component | Description |
-|-----------|-------------|
-| **Timeline** | Step-by-step progress for deployments, CI pipelines |
-| **Dashboard** | HUD-style displays with percentage bars |
-| **Cards** | Bordered info panels |
-| **Tree** | File system and config visualization |
-| **Sparklines** | Inline charts for metrics |
-| **Badges** | Status pills and indicators |
-| **Heatmap** | Activity grids |
-| **Toast** | Notification popups |
-| **Diff** | Side-by-side comparisons |
-| **Preview** | Dry-run displays |
+| Package | Description |
+|---------|-------------|
+| `@easycli/core` | CLI definition, parsing, routing |
+| `@easycli/ui` | Colors, spinners, progress, tables, boxes |
+| `@easycli/prompts` | Interactive prompts, sanitization |
+| `@easycli/help` | Help text generation |
+| `@easycli/config` | Config file loading |
+| `@easycli/plugins` | Plugin system |
+| `create-easycli` | Project scaffolder |
 
 ---
 
 ## Documentation
 
-- [Getting Started](getting-started) - Quick setup guide
-- [Features](features) - Complete feature documentation
+- [Getting Started](getting-started) - Setup in 5 minutes
 - [API Reference](api-reference) - Full API docs
+- [Building Beautiful CLIs](building-beautiful-clis) - Complete guide
 - [Why EasyCLI?](why-easycli) - Framework comparisons
 
 ---
@@ -83,24 +120,21 @@ cli.run();
 ## Example Output
 
 ```
-Timeline:
-> Build (12s)
-|
-> Test (8s)
-|
-* Deploy
-|
-o Verify
+$ my-cli deploy up production --replicas 5
 
-Dashboard:
-CPU    ██████████████░░░░░░ 68%
-Memory █████████░░░░░░░░░░░ 54%
+╭──────────────────────────╮
+│ Deploying to production  │
+╰──────────────────────────╯
 
-Cards:
-┌── API Server ──┐
-│ Status Running │
-│ Port   3000    │
-└────────────────┘
+? Deploy to production? (y/n) y
+
+⠋ Deploying to production...
+✔ Deployed!
+
+╭─────────────────────────╮
+│ Environment: production │
+│ Replicas: 5             │
+╰─────────────────────────╯
 ```
 
 ---

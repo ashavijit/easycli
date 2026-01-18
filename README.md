@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![EasyCLI Logo](./logo.svg)
-
 **The modern framework for building type-safe, beautiful CLI applications.**
 
 *A complete replacement for Commander.js + Inquirer with better DX.*
@@ -13,28 +11,13 @@
 [![License](https://img.shields.io/npm/l/easycli-core?style=flat-square)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
-[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](./docs/building-beautiful-clis.md)
+[Features](#features) | [Quick Start](#quick-start) | [Documentation](#documentation) | [API Reference](./docs/api-reference.md)
 
 </div>
 
 ---
 
-## Why EasyCLI?
-
-Building CLIs should be as enjoyable as building web apps. **EasyCLI** provides a robust foundation with strict type safety, a modular architecture, and a suite of beautiful UI components out of the box.
-
-### ✨ Features
-
-- **🔒 End-to-End Type Safety**: Define your schema once, get fully typed arguments and flags in your handlers.
-- **🎨 Stunning UI Components**: Built-in support for [Colors](./packages/ui/src/colors.ts), [Spinners](./packages/ui/src/spinner.ts), [Progress Bars](./packages/ui/src/progress.ts), [Tables](./packages/ui/src/table.ts), and [Boxes](./packages/ui/src/box.ts).
-- **💬 Interactive Prompts**: Text input, password, confirm, select, and multiselect prompts.
-- **🧩 Modular Architecture**: Composable commands, plugins, and deep nesting support.
-- **⚡ Zero Config**: Works out of the box with reasonable defaults.
-- **🧠 Developer Experience**: Great error messages, autocomplete, and self-documenting code.
-
-## 📦 Installation
-
-### Quick Start with Scaffolder
+## Quick Start
 
 ```bash
 npx create-easycli my-app
@@ -42,37 +25,56 @@ cd my-app
 pnpm dev hello World
 ```
 
-### Manual Installation
+---
 
-```bash
-pnpm add easycli-core easycli-ui
-```
+## Features
 
-## 🚀 Quick Start
+| Feature | Description |
+|---------|-------------|
+| **Type Safety** | Full TypeScript inference from schema to handler |
+| **UI Components** | Colors, spinners, progress bars, tables, boxes |
+| **Prompts** | Text, password, confirm, select, multiselect |
+| **Signal Handling** | Graceful SIGINT/SIGTERM with cleanup hooks |
+| **Input Sanitization** | Built-in injection attack protection |
+| **Array Flags** | `--file a.ts --file b.ts` collects into arrays |
+| **Optional Args** | `{ type: "string", optional: true }` |
+| **Subcommands** | `cli db migrate`, `cli db seed` |
+| **Rich Errors** | Errors with hints and exit codes |
 
-Create your first CLI in `src/index.ts`:
+---
+
+## Example
 
 ```typescript
-import { defineCLI } from "easycli-core";
-import { colors, box } from "easycli-ui";
+import { defineCLI } from "@easycli/core";
+import { colors, spinner, box } from "@easycli/ui";
 
 const cli = defineCLI({
-  name: "my-cli",
+  name: "deploy-cli",
   version: "1.0.0",
-  description: "My awesome CLI tool",
-
   commands: {
-    greet: {
-      description: "Send a greeting",
-      args: {
-        name: "string"
-      },
+    up: {
+      description: "Deploy to environment",
+      args: { env: ["staging", "production"] },
       flags: {
-        loud: { type: "boolean", alias: "l" }
+        force: { type: "boolean", alias: "f" },
+        file: { type: "string", array: true, alias: "F" }
       },
-      run({ name, loud }) {
-        const message = `Hello, ${name}!`;
-        console.log(loud ? colors.bold(colors.red(message.toUpperCase())) : colors.green(message));
+      async run({ env, force, file }, ctx) {
+        if (!force) {
+          const proceed = await ctx.ask.confirm(`Deploy to ${env}?`);
+          if (!proceed) return;
+        }
+
+        const s = spinner(`Deploying ${file?.length || 0} files to ${env}...`);
+        s.start();
+        await deploy(env);
+        s.success("Deployed!");
+
+        console.log(box(`Environment: ${colors.cyan(env)}`, {
+          borderStyle: "rounded",
+          borderColor: "green"
+        }));
       }
     }
   }
@@ -81,56 +83,117 @@ const cli = defineCLI({
 cli.run();
 ```
 
-Run it:
+Usage:
 ```bash
-node src/index.js greet "World" --loud
+deploy-cli up production --force --file api.ts --file worker.ts
 ```
 
-## 📦 UI Components
+---
 
-### Box / Panel
+## Packages
 
-Display beautiful bordered boxes for announcements and notices:
+| Package | Description | Install |
+|---------|-------------|---------|
+| `@easycli/core` | CLI definition, parsing, routing | `pnpm add @easycli/core` |
+| `@easycli/ui` | Colors, spinners, progress, tables, boxes | `pnpm add @easycli/ui` |
+| `@easycli/prompts` | Interactive prompts, sanitization | `pnpm add @easycli/prompts` |
+| `@easycli/help` | Help text generation | `pnpm add @easycli/help` |
+| `@easycli/config` | Config file loading | `pnpm add @easycli/config` |
+| `@easycli/plugins` | Plugin system | `pnpm add @easycli/plugins` |
+| `create-easycli` | Project scaffolder | `npx create-easycli` |
+
+---
+
+## UI Components
+
+### Colors
 
 ```typescript
-import { box } from "easycli-ui";
+import { colors } from "@easycli/ui";
 
-console.log(box("Update available: 1.0.0 → 2.0.0", {
-  borderStyle: "rounded",  // single, double, rounded, bold
-  borderColor: "yellow",
+console.log(colors.green("Success!"));
+console.log(colors.bold(colors.red("Error!")));
+console.log(colors.bgCyan(colors.white("Highlight")));
+```
+
+### Spinner
+
+```typescript
+import { spinner } from "@easycli/ui";
+
+const s = spinner("Loading...");
+s.start();
+await doWork();
+s.success("Done!");
+```
+
+### Progress Bar
+
+```typescript
+import { progress } from "@easycli/ui";
+
+const bar = progress(100);
+for (let i = 0; i <= 100; i += 10) {
+  bar.update(i);
+  await delay(100);
+}
+bar.complete();
+```
+
+### Table
+
+```typescript
+import { table } from "@easycli/ui";
+
+table([
+  { Name: "api", Status: "Running", Port: 3000 },
+  { Name: "worker", Status: "Stopped", Port: 3001 }
+]);
+```
+
+### Box
+
+```typescript
+import { box } from "@easycli/ui";
+
+console.log(box("Hello World!", {
+  title: "Greeting",
+  borderStyle: "rounded",
+  borderColor: "cyan",
   padding: 1
 }));
-
-console.log(box([
-  "New features:",
-  "• Box component",
-  "• Better prompts"
-], {
-  title: " What's New ",
-  borderStyle: "double",
-  borderColor: "cyan"
-}));
 ```
 
-Output:
-```
-╭─────────────────────────────────╮
-│                                 │
-│ Update available: 1.0.0 → 2.0.0 │
-│                                 │
-╰─────────────────────────────────╯
-```
+---
 
-## 📚 Documentation
+## Documentation
 
-- [**Building Beautiful CLIs**](./docs/building-beautiful-clis.md): A comprehensive guide to designing top-tier command-line experiences.
-- [Examples](./examples/): Check out the `simple-app`, `myapp`, and `nextjs-cli` examples for real-world usage.
+| Document | Description |
+|----------|-------------|
+| [Getting Started](./docs/getting-started.md) | Setup in 5 minutes |
+| [API Reference](./docs/api-reference.md) | Complete API docs |
+| [Building Beautiful CLIs](./docs/building-beautiful-clis.md) | Full feature guide |
+| [Why EasyCLI?](./docs/why-easycli.md) | Framework comparison |
 
-## 🤝 Contributing
+---
 
-Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) for details.
+## Examples
 
-## 📄 License
+| Example | Description |
+|---------|-------------|
+| [simple-app](./examples/simple-app) | Basic CLI with one command |
+| [myapp](./examples/myapp) | Full-featured demo |
+| [test-features](./examples/test-features) | Tests all production features |
+| [deploy-cli](./examples/deploy-cli) | Deployment tool example |
 
-MIT © [Avijit](https://github.com/ashavijit)
+---
 
+## Contributing
+
+Contributions welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+---
+
+## License
+
+MIT - [Avijit](https://github.com/ashavijit)

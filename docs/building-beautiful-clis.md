@@ -16,6 +16,9 @@ This guide covers the complete **EasyCLI** API with examples.
 6. [Boxes](#6-box-api)
 7. [Interactive Prompts](#7-prompts-api)
 8. [Hooks & Plugins](#8-hooks--plugins)
+9. [Signal Handling](#9-signal-handling)
+10. [Input Sanitization](#10-input-sanitization)
+11. [Advanced Flags](#11-advanced-flags)
 
 ---
 
@@ -493,6 +496,144 @@ const cli = defineCLI({
 
 ---
 
+## 9. Signal Handling
+
+EasyCLI automatically handles SIGINT (Ctrl+C) and SIGTERM for graceful shutdown.
+
+### Automatic Handling
+
+Signal handlers are installed automatically when you call `cli.run()`. The CLI will:
+- Catch Ctrl+C and SIGTERM
+- Reset terminal state (cursor, raw mode)
+- Exit with appropriate codes (130 for SIGINT, 143 for SIGTERM)
+
+### Custom Cleanup
+
+Register cleanup functions to run before exit:
+
+```typescript
+import { onCleanup } from "@easycli/core";
+
+onCleanup(async () => {
+  await database.disconnect();
+  await cache.flush();
+  console.log("Cleanup complete");
+});
+```
+
+### Manual Installation
+
+For advanced use cases:
+
+```typescript
+import { installSignalHandlers, resetTerminal } from "@easycli/core";
+
+installSignalHandlers();
+onCleanup(resetTerminal);
+```
+
+---
+
+## 10. Input Sanitization
+
+Protect your CLI from injection attacks with built-in sanitization.
+
+```typescript
+import { sanitize, sanitizeWithLimit, isValidPath } from "@easycli/prompts";
+```
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `sanitize(input)` | Remove control chars and ANSI escape codes |
+| `sanitizeWithLimit(input, max)` | Sanitize and enforce max length |
+| `validatePattern(input, regex)` | Validate against a pattern |
+| `isValidPath(input)` | Check for path traversal attacks |
+
+### Example
+
+```typescript
+const userInput = await ctx.ask.text("Enter filename");
+
+if (!isValidPath(userInput)) {
+  throw ctx.error("Invalid path", { hint: "Paths cannot contain .." });
+}
+
+const clean = sanitize(userInput);
+```
+
+### Automatic Sanitization
+
+All prompt inputs are automatically sanitized:
+
+```typescript
+const name = await ctx.ask.text("Name");
+```
+
+---
+
+## 11. Advanced Flags
+
+### Optional Arguments
+
+Arguments can be marked as optional:
+
+```typescript
+commands: {
+  greet: {
+    args: {
+      name: { type: "string", optional: true }
+    },
+    run({ name }) {
+      if (name) {
+        console.log(`Hello, ${name}!`);
+      } else {
+        console.log("Hello, stranger!");
+      }
+    }
+  }
+}
+```
+
+### Array Flags
+
+Collect multiple flag values into an array:
+
+```typescript
+commands: {
+  build: {
+    flags: {
+      file: { type: "string", array: true, alias: "f" },
+      exclude: { type: "string", array: true }
+    },
+    run({ file, exclude }) {
+      console.log("Files:", file);
+      console.log("Excluded:", exclude);
+    }
+  }
+}
+```
+
+Usage:
+```bash
+my-cli build --file a.ts --file b.ts --file c.ts
+my-cli build -f one.ts -f two.ts
+```
+
+### Flag Reference
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | `"string" \| "boolean" \| "number"` | Value type |
+| `alias` | `string` | Short flag (e.g., `-f`) |
+| `default` | `any` | Default value |
+| `required` | `boolean` | Fail if not provided |
+| `array` | `boolean` | Collect multiple values |
+| `description` | `string` | Help text |
+
+---
+
 ## Putting It All Together
 
 ```typescript
@@ -509,23 +650,19 @@ const cli = defineCLI({
       args: { env: ["prod", "staging", "dev"] },
       
       async run({ env }, ctx) {
-        // 1. Welcome
         console.log(box(`Deploying to ${colors.bold(env)}`, {
           borderStyle: "rounded",
           borderColor: "cyan"
         }));
 
-        // 2. Confirm
         const proceed = await ctx.ask.confirm("Proceed with deployment?");
         if (!proceed) return;
 
-        // 3. Long operation
         const s = spinner("Building...");
         s.start();
         await build();
         s.success("Build complete");
 
-        // 4. Progress
         const bar = progress(100);
         for (let i = 0; i <= 100; i += 20) {
           await uploadChunk();
@@ -533,7 +670,6 @@ const cli = defineCLI({
         }
         bar.complete();
 
-        // 5. Summary
         table([
           { Service: "api", Status: "Running", Replicas: 3 },
           { Service: "worker", Status: "Running", Replicas: 2 }
@@ -551,3 +687,4 @@ cli.run();
 ---
 
 Check out the [packages/ui source code](../packages/ui) to see how these components are built!
+
